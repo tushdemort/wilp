@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='exam/edit_exam.css') }}">
+
+<div class="container table">
+
+    <table style="width: 100%;">
+        <tr>
+            <td></td>
+            {% for i in ['EASY','MEDIUM','HARD'] %}
+            <td style="text-transform: uppercase;">&nbsp;{{i}}&nbsp;</td>
+            {% endfor %}
+        </tr>
+        {% for i in ['mcq','short','long','multi_mcq'] %}
+        <tr>
+            <td style="text-transform: uppercase;">&nbsp;{{i}} Questions&nbsp;</td>
+            {% for j in ['EASY','MEDIUM','HARD'] %}
+            <td>
+                {% if i in questions_paper.keys() and j in questions_paper[i].keys() %}
+                <button onclick="Display('{{i}}{{j}}')" class="btn btn-dark">Go to Question</button>
+                {% else %}
+                <p>Not Applicable</p>
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+<br>
+<br>
+<br>
+
+<div class="container main" id="initial">
+    <form method="POST">
+        {% for type in ['mcq','short','long','multi_mcq'] %}
+        {% for lvl in ['EASY','MEDIUM','HARD']%}
+        {% if type in questions_paper.keys() and lvl in questions_paper[type].keys() %}
+        <span id="{{type}}{{lvl}}" class="questions">
+            <br>
+            {% if type=='mcq' or type=='multi_mcq'%}
+            {% for i in questions_paper[type][lvl] %}
+            <div class="container">
+                <p>Question: {{i['ques']}}</p>
+                {%for j in ['A','B','C','D']%}
+                <p>Option {{j}}: {{i['options'][j]}}</p>
+                {%endfor%}
+                <input type="checkbox" id={{i['id']}} name={{i['id']}} value={{i['id']}}>
+                <label for={{i['id']}}>Delete</label>
+            </div>
+            <br>
+            {% endfor %}
+            {% endif %}
+            {% if type=='short' or type=='long' %}
+            {% for i in questions_paper[type][lvl] %}
+            <div class="container">
+                <p>Question: {{i['ques']}}</p>
+                <input type="checkbox" id={{i['id']}} name={{i['id']}} value={{i['id']}}>
+                <label for={{i['id']}}>Delete</label>
+            </div>
+            <br>
+            {% endfor %}
+            {% endif %}
+
+            <button href="#" class="btn btn-secondary form-control"
+                style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">
+                Save Changes
+            </button>
+            <a href="/approved/{{exam_id}}" class="btn btn-secondary form-control" onclick="return clicked()"
+                style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">
+                Submit Paper
+            </a>
+            <br><br>
+        </span>
+
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    </form>
+</div>
+
+<br>
+
+<script>
+
+    myvar = '{{exam_info|tojson}}';
+    var parsed = JSON.parse(myvar);
+    console.log(parsed);
+    var types = Object.keys(parsed['questions']);
+    function Display(id) {
+        var w = document.getElementById(`initial`);
+        w.style.display = "block";
+
+        for (let k = 0; k < types.length; k++) {
+            var levels = parsed['questions'][types[k]];
+            console.log(levels, types)
+            for (let o = 0; o < Object.keys(levels).length; o++) {
+                if (Object.keys(levels)[o] != "marks") {
+                    var cur_id = `${types[k]}${Object.keys(levels)[o]}`;
+                    var y = document.getElementById(cur_id);
+                    console.log(cur_id);
+                    y.style.display = "none";
+                }
+            }
+        }
+        var y = document.getElementById(id);
+        y.style.display = "block";
+    }
+
+    function clicked() {
+        return confirm('Are you sure all changes have been saved?');
+    }
+
+</script>
+{% endblock content %}

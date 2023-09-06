@@ -1,0 +1,70 @@
+.one {
+    width: 100%;
+    padding: auto;
+}
+
+.grid-container {
+    border: solid 1px #eeeeee;
+    padding: .5vw;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 24.5vw;
+    grid-gap: 0.6vw;
+}
+
+.griditem {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    padding: 4vw;
+    font-size: 0.8em;
+    box-sizing: border-box;
+    filter: brightness(100%);
+    transition: 0.3s;
+    height: 125%;
+}
+
+.griditem:hover {
+    cursor: pointer;
+    transform: scale(1.035);
+    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.image1 {
+    background-position: center;
+    background-image: url("https://media.discordapp.net/attachments/1007521124667621408/1084318562660921354/11709938_884883178273283_1838735233403199145_o.jpg?width=878&height=581");
+    /*grid-area: image1;*/
+}
+
+.image2 {
+    background-image: url("https://media.discordapp.net/attachments/1007521124667621408/1084318561973055508/298508494_431610002320040_442030023615913934_n.jpg?width=872&height=581");
+    /*grid-area: image2;*/
+}
+
+.image3 {
+    background-image: url("https://media.discordapp.net/attachments/1007521124667621408/1084318562442805319/2015-6-25--12-26-25-520_Admin_Block.jpg?width=871&height=581");
+    /*grid-area: image3;*/
+}
+
+.image4 {
+    background-image: url("https://media.discordapp.net/attachments/1007521124667621408/1084318562216321044/Campus_Pic_0_1200x768.jpeg?width=1033&height=580");
+    /*grid-area: image4;*/
+}
+
+.topright {
+    position: absolute;
+    text-align: left;
+    bottom: 200px;
+    width: 200px;
+    right: 0;
+    font-size: 24px;
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    letter-spacing: 1px;
+    background-color: #2b2b2b;
+    color: aliceblue;
+    padding-right: 6px;
+    padding-left: 6px;
+    transform: rotate(-90deg);
+    transform-origin: bottom right;
+}

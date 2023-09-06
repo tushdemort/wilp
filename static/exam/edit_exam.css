@@ -1,0 +1,29 @@
+table,
+td,
+th {
+    border: 1px solid black;
+}
+
+table {
+    padding: none;
+}
+
+span {
+    display: none;
+}
+
+.container {
+    border: 2px solid black;
+}
+
+.main {
+    display: none;
+}
+
+.table {
+    width: fit-content;
+}
+
+.submit {
+    display: none;
+}

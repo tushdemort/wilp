@@ -1,0 +1,192 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='exam/set_exam.css') }}">
+
+<script src='https://code.jquery.com/jquery-3.2.1.js'></script>
+
+<div class="ihome content-section">
+    <form method="POST" action="" onkeydown="return event.key != 'Enter';" enctype="multipart/form-data">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Generate Custom Questions</legend>
+            <div class="form-group">
+                <label for="validationCustom03" class="form-label mssg">
+                    Which Exam:</label>
+                <div style="display:flex;">
+                    <div>
+                        <input type="radio" class='high_dif' name="exam" id="mid" value="mid" checked
+                            style="margin-left:0;">
+                        <label class='high_dif_label' for="mid">Mid Semester</label>
+                    </div>
+                    <div>
+                        <input type="radio" class='high_dif' name="exam" id="end" value="end" style="margin-left: 0;">
+                        <label class='high_dif_label' for="end">End Semester</label>
+                    </div>
+                </div>
+                <label for="validationCustom03" class="form-label mssg">
+                    What all Topics:</label>
+                <div class="wrapper">
+                    <button class="form-control toggle-next ellipsis" type="button" id="categories"
+                        name="categories">Select Topics</button>
+                    <div class="checkboxes" id="Categories" style="display: none; margin-top: 20px">
+                        <div class="inner-wrap">
+                            <label>
+                                <input type="checkbox" value="all_topics" name="all_topics" class="ckkBox all"
+                                    checked />
+                                <span>All Topics</span>
+                            </label><br>
+                            {% for i in topics %}
+                            <label>
+                                <input type="checkbox" value="{{i}}" name="{{i}}" class="ckkBox val" />
+                                <span>{{i}}</span>
+                            </label><br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <table style="width: 100%;">
+                    <tr>
+                        <td></td>
+                        <td style="text-transform: uppercase;">&nbsp;MARKS&nbsp;</td>
+                        {% for i in data['levels'] %}
+                        <td style="text-transform: uppercase;">&nbsp;{{i}}&nbsp;</td>
+                        {% endfor %}
+                    </tr>
+                    {% for i in data['types'] %}
+                    <tr>
+                        <td style="text-transform: uppercase;">&nbsp;{{i}} Questions&nbsp;</td>
+                        <td><input type="number" min="0" , max="100" name="{{i}}-marks" id="changed{{i}}"
+                                style="width:100%" value="0"></td>
+                        {% for j in data['levels'] %}
+                        <td><input type="number" min="0" , max="100" name="{{i}}-{{j}}-total" id="changed{{i}}{{j}}"
+                                style="width:100%" value="0"></td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                <br>
+                <label for="validationCustom03" class="form-label mssg">
+                    Total Marks:</label>
+                <div class="autoUpdateText">0</div>
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required><br>
+                <label for="time">Time:</label>
+                <input type="time" id="time" name="time" required><br>
+                <label for="duration">Duration:</label>
+                <input type="number" id="duration" name="duration" required>
+                <br>
+                <label for="open_book">Open Book Exam: </label>
+                <input type="checkbox" id="open_book" name="open_book" value=true><br>
+                <label for="calculator">Calculator Allowed: </label>
+                <input type="checkbox" id="calculator" name="calculator" value=true><br>
+                <label for="compiler">Compiler Allowed: </label>
+                <input type="checkbox" id="compiler" name="compiler" value=true><br>
+                <label for="excel">Excel Allowed: </label>
+                <input type="checkbox" id="excel" name="excel" value=true>
+
+            </div>
+            <div class="form-group">
+                <button href="#" class="btn btn-secondary form-control" onclick="return clicked()"
+                    style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">
+                    Submit
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script>
+    var data = JSON.parse('{{ data | tojson | safe}}');
+
+    let sum = 0;
+
+    const elem = document.querySelector(".autoUpdateText");
+
+    function setMarks() {
+        sum = 0
+        for (let i = 0; i < data['types'].length; i++) {
+            let marks = document.querySelector("#changed" + data['types'][i]).value;
+            for (let j = 0; j < data['levels'].length; j++) {
+                const type = document.querySelector("#changed" + data['types'][i] + data['levels'][j]).value;
+                sum += type * marks
+            }
+        }
+        return sum
+    }
+
+    for (let i = 0; i < data['types'].length; i++) {
+        const input = document.querySelector("#changed" + data['types'][i]);
+        input.addEventListener("input", function (e) {
+            elem.innerHTML = setMarks();
+        });
+        for (let j = 0; j < data['levels'].length; j++) {
+            const input = document.querySelector("#changed" + data['types'][i] + data['levels'][j]);
+            input.addEventListener("input", function (e) {
+                elem.innerHTML = setMarks();
+            });
+        }
+    }
+
+    $(function () {
+
+        setCheckboxSelectLabels();
+
+        $('.toggle-next').click(function () {
+            $(this).next('.checkboxes').slideToggle(200);
+        });
+
+        $('.ckkBox').change(function () {
+            toggleCheckedAll(this);
+            setCheckboxSelectLabels();
+        });
+
+    });
+
+    function setCheckboxSelectLabels(elem) {
+        var wrappers = $('.wrapper');
+        $.each(wrappers, function (key, wrapper) {
+            var checkboxes = $(wrapper).find('.ckkBox');
+            var label = $(wrapper).find('.checkboxes').attr('id');
+            var prevText = '';
+            $.each(checkboxes, function (i, checkbox) {
+                var button = $(wrapper).find('button');
+                if ($(checkbox).prop('checked') == true) {
+                    var text = $(checkbox).next().html();
+                    var btnText = prevText + text;
+                    var numberOfChecked = $(wrapper).find('input.val:checkbox:checked').length;
+                    if (numberOfChecked >= 4) {
+                        btnText = numberOfChecked + ' ' + label + ' selected';
+                    }
+                    $(button).text(btnText);
+                    prevText = btnText + ', ';
+                }
+            });
+        });
+    }
+
+    function toggleCheckedAll(checkbox) {
+        var apply = $(checkbox).closest('.wrapper').find('.apply-selection');
+        apply.fadeIn('slow');
+
+        var val = $(checkbox).closest('.checkboxes').find('.val');
+        var all = $(checkbox).closest('.checkboxes').find('.all');
+        var ckkBox = $(checkbox).closest('.checkboxes').find('.ckkBox');
+
+        if (!$(ckkBox).is(':checked')) {
+            $(all).prop('checked', true);
+            return;
+        }
+
+        if ($(checkbox).hasClass('all')) {
+            $(val).prop('checked', false);
+        } else {
+            $(all).prop('checked', false);
+        }
+    }
+
+    function clicked() {
+        return confirm('Are you sure all changes have been saved?');
+    }
+
+</script>
+
+{% endblock content %}

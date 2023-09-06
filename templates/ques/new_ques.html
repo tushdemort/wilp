@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='ques/new_ques.css') }}">
+
+<link href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='token/token.css') }}">
+
+<div class="ihome content-section">
+    <form method="POST" action="" onkeydown="return event.key != 'Enter';" enctype="multipart/form-data">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Generate Custom Questions</legend>
+            <div class="form-group">
+                <p style="margin-bottom:0.5rem">Question Type:</p>
+                <div>
+                    <div style="float: left;">
+                        <input type="radio" class="high_dif" name="option" id='mcq' value="mcq" checked
+                            onclick="showDiv(1)">
+                        <label class='high_dif_label' for="mcq">MCQ</label>
+                    </div>
+                    <div style="float: left;">
+                        <input type="radio" class="high_dif" name="option" id="short" value="short"
+                            onclick="showDiv(2)">
+                        <label class='high_dif_label' for="short">Short Answer</label>
+                    </div>
+                    <div style="float: left;">
+                        <input type="radio" class="high_dif" name="option" id="long" value="long" onclick="showDiv(2)">
+                        <label class='high_dif_label' for="long">Long Answer</label>
+                    </div>
+                    <div style="float: left;">
+                        <input type="radio" class="high_dif" name="option" id="multi_mcq" value="multi_mcq"
+                            onclick="showDiv(3)">
+                        <label class='high_dif_label' for="multi_mcq">Multi MCQ</label>
+                    </div>
+                </div>
+                <br><br>
+                <label for="validationCustom03" class="form-label mssg">
+                    What is the Topic:</label>
+                <br>
+                <input id="tokenfield-1" name="topics"
+                    style="width:100%; margin-top: -10px; padding: 10px; border: grey solid 1px;border-radius: 10px;">
+                <label for="validationCustom03" class="form-label mssg">
+                    What is the Question:</label><br>
+                <input required class="datalist datalistt" required name="ques" id="ques"
+                    style="width:100%; margin-top: -10px; padding: 10px; border: grey solid 1px;border-radius: 10px;">
+                <br>
+                <script>
+                    function showDiv(div_no) {
+                        for (let i = 1; i < 4; i++) {
+                            if (i == div_no) {
+                                document.getElementById(i).style.display = "block";
+                            }
+                            else {
+                                document.getElementById(i).style.display = "none";
+                            }
+                        }
+                    }
+                </script>
+                <label for="validationCustom03" class="form-label mssg">
+                    What is the Answer:</label><br>
+                <div id="1" style="display:block;">
+                    {% for j in range(4) %}
+                    <input type="radio" name="radio" value="{{j}}" style="float: left; margin:0px; margin-top: 18px;">
+                    <input type="text" name="{{j}}"
+                        style="float:left; width:96%; margin-left: 2%; padding: 10px; border: grey solid 1px; border-radius: 10px; margin-bottom:10px">
+                    <br>
+                    <br>
+                    {% endfor %}
+                </div>
+                <div id="2" style="display:none;">
+                    <textarea type="text" name="correct" id="correct"
+                        style="width:100%; margin-top: -10px; padding: 10px; border: grey solid 1px;border-radius: 10px;"></textarea>
+                </div>
+                <div id="3" style="display:none;">
+                    {% for j in range(4) %}
+                    <input type="checkbox" name="check" value="{{j}}"
+                        style="float: left; margin:0px; margin-top: 18px;">
+                    <input type="text" name="mmq{{j}}"
+                        style="float:left; width:96%; margin-left: 2%; padding: 10px; border: grey solid 1px; border-radius: 10px; margin-bottom:10px">
+                    <br>
+                    <br>
+                    {% endfor %}
+                </div>
+                <p style="margin-bottom: 0.5rem;">Choose Question Difficulty:</p>
+                <div style="display:flex;">
+                    <div>
+                        <input class='high_dif' type="radio" id="EASY" name="dif" value="EASY" checked
+                            style="margin-left:0;">
+                        <label class='high_dif_label' for="EASY">Easy</label>
+                    </div>
+                    <div>
+                        <input class='high_dif' type="radio" id="MEDIUM" name="dif" value="MEDIUM"
+                            style="margin-left: 0;">
+                        <label class='high_dif_label' for="MEDIUM">Medium</label>
+                    </div>
+                    <div>
+                        <input class='high_dif' type="radio" id="HARD" name="dif" value="HARD" style="margin-left: 0;">
+                        <label class='high_dif_label' for="HARD">Hard</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button href="#" class="btn btn-secondary form-control"
+                    style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">
+                    Submit
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='token/token.js') }}"></script>
+
+<script type="text/javascript">
+    var data = {{ topics | tojson}};
+    jQuery(document).ready(function (a) {
+        a("#tokenfield-1").tokenfield({
+            autocomplete: {
+                source: data,
+                delay: 0,
+            },
+            showAutocompleteOnFocus: true,
+            delimiter: [",", " ", "-", "_"],
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+
+{% endblock content %}

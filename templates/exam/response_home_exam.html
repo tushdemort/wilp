@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='exam/responses_home_exam.css') }}">
+<div class="'wrapper" style="display: grid; grid-template-columns: auto auto auto;">
+    {%for i in all_exam_info%}
+    <div class="container" style="border: black 2px solid; width: auto; margin: 2rem;">
+        <p>
+            Year:{{i['year']}}
+            <a href="/{{course_id}}/response/{{i['refId']}}">
+                <button style="float: right;margin-top: 7%; background:rgb(47, 96, 153);color: white;border-radius: 20px 20px;padding: 1%;" >Evaluate Exam</button>
+            </a>
+            <br>
+            Type: {{i['examType']}}
+            <br>
+            Semester: {{i['sem']}}
+            <br>
+            Date:{{i['date']}}
+        </p>
+    </div>
+    {%endfor%}
+</div>
+<br>
+
+
+
+
+{% endblock %}

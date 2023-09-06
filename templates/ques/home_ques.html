@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='ques/home_ques.css') }}">
+
+<div class="both">
+  <div class="float-child">
+    <div class="two">
+      <img style="width: 100%; height: 100px; object-fit: cover;"
+        src="https://images.pexels.com/photos/4498362/pexels-photo-4498362.jpeg?cs=srgb&dl=pexels-karolina-grabowska-4498362.jpg&fm=jpg">
+      <div class="three">
+        <div>
+          <a href="/{{course_id}}/gen_ques">
+            <button type=" submit" class="btn btn-secondary form-control"
+              style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">Generate
+              Questions</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="float-child">
+    <div class="two">
+      <img style="width: 100%; height: 100px; object-fit: cover;"
+        src="https://images.pexels.com/photos/4498362/pexels-photo-4498362.jpeg?cs=srgb&dl=pexels-karolina-grabowska-4498362.jpg&fm=jpg">
+      <div class="three">
+        <div>
+          <a href="/{{course_id}}/new_ques">
+            <button type=" submit" class="btn btn-secondary form-control"
+              style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">Generate
+              Custom
+              Question</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="float-child">
+    <div class="two">
+      <img style="width: 100%; height: 100px; object-fit: cover;"
+        src="https://images.pexels.com/photos/4498362/pexels-photo-4498362.jpeg?cs=srgb&dl=pexels-karolina-grabowska-4498362.jpg&fm=jpg">
+      <div class="three">
+        <div>
+          <a href="/{{course_id}}/view_ques">
+            <button type=" submit" class="btn btn-secondary form-control"
+              style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">View
+              Questions</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="float-child">
+    <div class="two">
+      <img style="width: 100%; height: 100px; object-fit: cover;"
+        src="https://images.pexels.com/photos/4498362/pexels-photo-4498362.jpeg?cs=srgb&dl=pexels-karolina-grabowska-4498362.jpg&fm=jpg">
+      <div class="three">
+        <div>
+          <a href="/{{course_id}}/edit_ques">
+            <button type=" submit" class="btn btn-secondary form-control"
+              style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">Edit
+              Questions</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='exam/student_exam.css') }}">
+<div class="container main">
+    <form method="POST">
+        {% for i in range(length)%}
+        {% set quesId = response['userResponse'][i]['quesId']%}
+        {%if 'marks' not in response['userResponse'][i].keys()%}
+        {% if questionData[i][quesId]['type'] in ['short','long']%}
+        <div class="container child">
+            <p>Question: {{questionData[i][quesId]['ques']}}</p>
+            <p>Response: {{response['userResponse'][i]['response']}}</p>
+            <p>Correct Answer: {{questionData[i][quesId]['correct']}}</p>
+            <p style="float: right;">AI Marks: {{aiMarks[quesId]}}</p>
+            <p>Max Marks: {{quesInfo['questions']['long']['marks'] if questionData[i][quesId]['type']=='long' else
+                quesInfo['questions']['short']['marks'] }}</p>
+            <br><br>
+            <input type="number" id={{quesId}} name={{quesId}} min="0" max={{quesInfo['questions']['long']['marks'] if
+                questionData[i][quesId]['type']=='long' else quesInfo['questions']['short']['marks'] }}
+                style="float: right;" value="{{evaluated_marks[i] if evaluated_marks[i] != ''}}">
+            <label for="a" style="float: right;">Enter Marks: </label>
+            <br>
+            <br>
+        </div>
+        {% endif %}
+        {%endif%}
+        <br>
+        {% endfor%}
+        <div class="form-group">
+            <button class="btn btn-secondary form-control"
+                style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">
+                Submit
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

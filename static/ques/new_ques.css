@@ -1,0 +1,73 @@
+.ihome {
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    border: 2px solid rgb(63, 63, 63);
+    border-radius: 10px;
+    padding: 2%
+}
+
+.datalistt {
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+
+.high_dif {
+    visibility: hidden;
+    height: 0;
+    width: 0;
+    border-radius: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+input[type="radio"][id='EASY']:checked+label {
+    box-shadow: 2px 3px #888888;
+    background-color: #217d49;
+}
+
+input[type="radio"][id='EASY']+label {
+    background-color: #75f0aa;
+}
+
+input[type="radio"][id='MEDIUM']:checked+label {
+    background-color: #b5b31e;
+    box-shadow: 2px 3px #888888;
+}
+
+input[type="radio"][id='MEDIUM']+label {
+    background-color: #f0ea7d;
+}
+
+input[type="radio"][id='HARD']:checked+label {
+    background-color: #bf3232;
+    box-shadow: 2px 3px #888888;
+}
+
+input[type="radio"][id='HARD']+label {
+    background-color: #ff6a6a;
+}
+
+.high_dif_label {
+    padding: 8px 12px !important;
+    background-color: #454545;
+    color: rgb(255, 251, 251);
+    border-color: #16192c;
+    border-radius: 00px !important;
+    transition: all .3s ease-out;
+    padding: 1% 2%;
+    margin-left: 0;
+}
+
+input[type="radio"][name='option']+label {
+    border-radius: 10px;
+    margin-right: 3px;
+    background-color: rgb(69, 131, 208);
+}
+
+input[type="radio"][name='option']:checked+label {
+    background-color: #1a1dcd;
+    border-radius: 10px;
+    margin-right: 3px;
+    box-shadow: 2px 3px #888888;
+}

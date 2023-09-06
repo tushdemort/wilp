@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home.css') }}">
+
+<body>
+    <center>
+        <div class="one">
+            <div id="grid" class="grid-container">
+                <a href="https://www.bits-pilani.ac.in/pilani/">
+                    <div id="image1" class="griditem image1">
+                        <div class="topright">PILANI</div>
+                    </div>
+                </a>
+                <a href="https://www.bits-pilani.ac.in/goa/">
+                    <div id="image2" class="griditem image2">
+                        <div class="topright">GOA</div>
+                    </div>
+                </a>
+                <a href="https://www.bits-pilani.ac.in/hyderabad/">
+                    <div id="image3" class="griditem image3">
+                        <div class="topright">HYDERABAD</div>
+                    </div>
+                </a>
+                <a href="https://www.bits-pilani.ac.in/dubai/">
+                    <div id="image4" class="griditem image4">
+                        <div class="topright">DUBAI</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </center>
+    </div>
+</body>
+
+</html>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+
+{% endblock content %}

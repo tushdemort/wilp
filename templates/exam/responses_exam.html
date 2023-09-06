@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='exam/response_exam.css') }}">
+<style>
+    td{
+        border: black 1px solid;
+        padding: 1%;
+        width: 10rem;
+        padding: auto;
+    }
+    .container{
+        display: flex;
+        justify-content: center;
+    }
+    .eval{
+        border-radius: 20px 20px;
+        padding: 5%;
+        background:rgb(47, 96, 153);
+        color: white;
+    }
+    .submit{
+        background: black;
+        color: white;
+        width: 150%;
+    }
+    form{
+        margin-top: 5%;
+    }
+</style>
+
+<div class="container">
+    {% set flag = 1%}
+    <table style="border: black 1px solid;">
+        <tr>
+            <td>Student ID</td>
+            <td>Evaluated Questions</td>
+            <td>Unevaluated Question</td>
+            <td>Evaluate Paper</td>
+        </tr>   
+        {% for i in data %}
+        {% set unevaluatedQuestions = subjectiveQues-data[i]%}
+        {% if unevaluatedQuestions != 0%}
+            {% set flag = 0%}
+        {% endif %}
+        <tr>
+            <td>{{i}}</td>
+            <td>{{data[i]}}</td>
+            <td>{{unevaluatedQuestions}}</td>
+            <td><a href="/{{course_id}}/response/{{exam_id}}/{{i}}"><button class="eval">Evaluate</button></a></td>
+        </tr>  
+        {% endfor %} 
+    </table>
+</div>
+<div class="container">
+    <form method="POST" >
+        {% if flag == 1%}
+        <button class="submit">Submit</button>
+        {% endif %}
+    </form>
+</div>
+
+{% endblock %}

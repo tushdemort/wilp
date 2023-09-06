@@ -1,0 +1,253 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='ques/gen_ques.css') }}">
+
+<link href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='token/token.css') }}">
+
+<script type="text/javascript">// <![CDATA[
+    function loading() {
+        $("#loading").show();
+        $("#content").hide();
+    }
+// ]]></script>
+<div id="content">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <div class="ihome content-section">
+        <form method="POST" action="" onkeydown="return event.key != 'Enter';" onsubmit="loading();">
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Request Questions from Text</legend>
+                <div class="form-group">
+                    <p style="margin-bottom:0.5rem">Question Type:</p>
+                    <div>
+                        <div style="float: left;">
+                            <input type="radio" class="high_dif" name="option" id='mcq' value="mcq" checked>
+                            <label class='high_dif_label' for="mcq">MCQ</label>
+                        </div>
+                        <div style="float: left;">
+                            <input type="radio" class="high_dif" name="option" id="short" value="short">
+                            <label class='high_dif_label' for="short">Short Answer</label>
+                        </div>
+                        <div style="float: left;">
+                            <input type="radio" class="high_dif" name="option" id="long" value="long">
+                            <label class='high_dif_label' for="long">Long Answer</label>
+                        </div>
+                        <div style="float: left;">
+                            <input type="radio" class="high_dif" name="option" id="multi_mcq" value="multi_mcq">
+                            <label class='high_dif_label' for="multi_mcq">Multi MCQ</label>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <p style="margin-bottom: 0.5rem;">Choose Question Difficulty:</p>
+                    <div style="display:flex;">
+                        <div>
+                            <input class='high_dif' type="radio" id="EASY" name="dif" value="EASY" checked
+                                style="margin-left:0;">
+                            <label class='high_dif_label' for="EASY">Easy</label>
+                        </div>
+                        <div>
+                            <input class='high_dif' type="radio" id="MEDIUM" name="dif" value="MEDIUM"
+                                style="margin-left: 0;">
+                            <label class='high_dif_label' for="MEDIUM">Medium</label>
+                        </div>
+
+                        <div>
+                            <input class='high_dif' type="radio" id="HARD" name="dif" value="HARD"
+                                style="margin-left: 0;">
+                            <label class='high_dif_label' for="HARD">Hard</label>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                    <label for="validationCustom03" class="form-label mssg">
+                        What is the Topic:</label>
+                    <br>
+                    <input id="topics" name="topics"
+                        style="width:100%; margin-top: -10px; padding: 10px; border: grey solid 1px;border-radius: 10px;">
+                    <label for="validationCustom03" class="form-label mssg" title="max 3500 characters allowed">
+                        What is the Content:</label><br>
+                    <textarea title="max 4500 characters allowed" class='for_js' type="text" id="content" name="content"
+                        style="width:100%; margin-top: -10px; padding: 10px; border: grey solid 1px;border-radius: 10px; display: block;"
+                        minlength="1500" maxlength="4500" required></textarea>
+                    <textarea title="max 3500 characters allowed" class='for_js' type="text" id="content_mcq" name="content"
+                        style="width:100%; margin-top: -10px; padding: 10px; border: grey solid 1px;border-radius: 10px; display: none;"
+                        minlength="1500" maxlength="4500" required disabled></textarea>
+                    <textarea title="max 3500 characters allowed" class='for_js' type="text" id="content_short" name="content"
+                        style="width:100%; margin-top: -10px; padding: 10px; border: grey solid 1px;border-radius: 10px; display: none;"
+                        minlength="1250" maxlength="4500" required disabled></textarea>
+                    <textarea title="max 3500 characters allowed" class='for_js' type="text" id="content_long" name="content"
+                        style="width:100%; margin-top: -10px; padding: 10px; border: grey solid 1px;border-radius: 10px; display: none;"
+                        minlength="2000" maxlength="4500" required disabled></textarea>
+                    <textarea title="max 3500 characters allowed" class='for_js' type="text" id="content_multi_mcq" name="content"
+                        style="width:100%; margin-top: -10px; padding: 10px; border: grey solid 1px;border-radius: 10px; display: none;"
+                        minlength="2500" maxlength="3500" required disabled></textarea><br>
+                <br>
+                <div class="form-group">
+                    <button href="#" class="btn btn-secondary form-control"
+                        style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">
+                        Submit
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script>
+    var $limitNum = 3750;
+$('textarea[name="content"]').keydown(function() {
+    var $this = $(this);
+
+    if ($this.val().length > $limitNum) {
+        $this.val($this.val().substring(0, $limitNum));
+    }
+});
+</script>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='token/token.js') }}"></script>
+
+<script type="text/javascript">
+    var data = {{ topics | tojson}};
+    jQuery(document).ready(function (a) {
+        a("#topics").tokenfield({
+            autocomplete: {
+                source: data,
+                delay: 0,
+            },
+            showAutocompleteOnFocus: true,
+            delimiter: [",", " ", "-", "_"],
+        });
+    });
+    document.getElementById('mcq').addEventListener('click', function () {
+        for (var i = 0; i < 5; i++) {
+            document.getElementsByClassName('for_js')[i].style.display = 'none';
+            document.getElementsByClassName('for_js')[i].disabled = true;
+        };
+        document.getElementById('content_mcq').style.display = 'block';
+        document.getElementById('content_mcq').disabled = false;
+        console.log('mcq');
+    });
+    document.getElementById('short').addEventListener('click', function () {
+        for (var i = 0; i < 5; i++) {
+            document.getElementsByClassName('for_js')[i].style.display = 'none';
+            document.getElementsByClassName('for_js')[i].disabled = true;
+        };
+        document.getElementById('content_short').style.display = 'block';
+        document.getElementById('content_short').disabled = false;
+        console.log('short');
+    });
+    document.getElementById('long').addEventListener('click', function () {
+        for (var i = 0; i < 5; i++) {
+            document.getElementsByClassName('for_js')[i].style.display = 'none';
+            document.getElementsByClassName('for_js')[i].disabled = true;
+        };
+        document.getElementById('content_long').style.display = 'block';
+        document.getElementById('content_long').disabled = false;
+        console.log('long');
+    });
+    document.getElementById('multi_mcq').addEventListener('click', function () {
+        for (var i = 0; i < 5; i++) {
+            document.getElementsByClassName('for_js')[i].style.display = 'none';
+            document.getElementsByClassName('for_js')[i].disabled = true;
+        };
+        document.getElementById('content_multi_mcq').style.display = 'block'
+        document.getElementById('content_multi_mcq').disabled = false;
+        console.log('multi');
+        ;
+    });
+
+</script>
+
+
+<br>
+
+<div id="loading" class="ihome content-section">
+    <center>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921"
+            style="width:100%; height: 100%;">
+    </center>
+</div>
+
+{% if length != 0 %}
+<div class="ihome content-section">
+
+
+    <form method="POST" action="" onkeydown="return event.key != 'Enter';">
+
+        {% for i in range(length) %}
+
+        <article class="media content-section"
+            style="border: 2px solid rgb(63, 63, 63);border-radius: 10px;padding: 2%">
+            <div class="media-body">
+                Question : <input type="text" name="question{{i}}" value="{{questions[i]['question']}}"
+                    style="width: 75%">
+                <br>
+                <br>
+                {% if ques_type=='mcq' %}
+                <p>Options: </p>
+                {% for j in ['A', 'B', 'C', 'D'] %}
+                <input style="width:0px" disabled>
+                <input type="radio" name="ans{{i}}" style="float: left; margin-top: 5px;" value="{{j}}" {{'checked' if j
+                    in questions[i]['correct'] else ' ' }}>
+                <input type="text" name="answer{{i}}{{j}}" value="{{questions[i]['options'][j]}}"
+                    style="float: left; width:75%; margin-left: 2%;">
+                <br>
+                {% endfor %}
+                {% elif ques_type=='short' %}
+                Answer : <input type="text" name="answer2{{i}}" value="{{questions[i]['correct']}}" style="width: 75%">
+                {% elif ques_type=='long' %}
+                Answer : <input type="text" name="answer2{{i}}" value="{{questions[i]['correct']}}" style="width: 75%">
+                {% elif ques_type=='multi_mcq' %}
+                <p>Options: </p>
+
+                {% for j in ['A', 'B', 'C', 'D'] %}
+                <input type="checkbox" name="ans{{i}}" style="float: left; margin-top: 5px;" {{'checked' if j in
+                    questions[i]['correct'] else ' ' }} value="{{j}}">
+                <input type="text" name="answer{{i}}{{j}}" value="{{questions[i]['options'][j]}}"
+                    style="float: left; width:75%; margin-left: 2%;">
+                <br>
+                <br>
+                {% endfor %}
+
+                {% endif %}
+                <br>
+                <br>
+                <br>
+                <input class='high_dif dif_easy' type="radio" id="dif_easy{{i}}" name="diff{{i}}" value="EASY" {{'checked' if
+                    diff_check['1'] else '' }}>
+                <label class='high_dif_label' for="dif_easy{{i}}">Easy</label>
+                <input class='high_dif dif_medium' type="radio" id="dif_medium{{i}}" name="diff{{i}}" value="MEDIUM" {{'checked' if
+                    diff_check['2'] else '' }}>
+                <label class='high_dif_label' for="dif_medium{{i}}">Medium</label>
+                <input class='high_dif dif_hard' type="radio" id="dif_hard{{i}}" name="diff{{i}}" value="HARD" {{'checked' if
+                    diff_check['3'] else '' }}>
+                <label class='high_dif_label' for="dif_hard{{i}}"">Hard</label>
+                    <div style=" float: right;">
+                    <input type="checkbox" id="{{i}}" name="{{i}}" style="float: none;">
+                    <label for="{{i}}" style="float: none;">Save</label>
+            </div>
+</div>
+</article>
+<br>
+{% endfor %}
+
+<div class="form-group">
+    <button href="#" class="btn btn-secondary form-control"
+        style="border: 2px solid #16192c;background-color: #16192c; margin:5px; box-shadow: 0px 0px 2px 2px rgb(53, 53, 53);">
+        Submit
+    </button>
+</div>
+
+</form>
+
+{% endif %}
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+
+{% endblock content %}
