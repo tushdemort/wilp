@@ -1,15 +1,17 @@
 "DocString"
+import os
+from dotenv import load_dotenv
+import pathlib
+
 import math
 import random
 import openai
 
-key_index = random.randint(0, 4)
-key_array = ["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",
-             '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',
-             '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',
-             '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',
-             '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']
+dotenv_path = pathlib.Path('.env')
+load_dotenv(dotenv_path=dotenv_path)
 
+key_index = random.randint(0, 4)
+key_array = [os.getenv("KEY1"), os.getenv("KEY2"), os.getenv("KEY3"), os.getenv("KEY4"), os.getenv("KEY5")]
 
 openai.api_key = key_array[key_index]
 

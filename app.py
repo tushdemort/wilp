@@ -1,6 +1,7 @@
 "DocString"
 import os
 import pathlib
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, abort, session, url_for
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
@@ -16,14 +17,17 @@ from generation import ques_gen
 from assessment import ai_marks
 import uuid
 
+dotenv_path = pathlib.Path('.env')
+load_dotenv(dotenv_path=dotenv_path)
+
 ques_info = {'question': []}
 
 app = Flask(__name__)
-app.secret_key = 'jk'
+app.secret_key = os.getenv("SECRET_KEY")
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-GOOGLE_CLIENT_ID = '614245365180-sqfhaa5ncfjkmbid59bmnk44feumdl1k.apps.googleusercontent.com'
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 client_secrets_file = os.path.join(
     pathlib.Path(__file__).parent, "secret/oauth.json")
 
@@ -31,8 +35,7 @@ flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile",
             "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="https://wilp-professor-end.onrender.com/callback"
-    # redirect_uri="http://127.0.0.1:5000/callback"
+    redirect_uri=os.getenv("CALLBACK")
 )
 
 

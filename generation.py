@@ -1,9 +1,16 @@
 "DocString"
+import os
+from dotenv import load_dotenv
+import pathlib
+
 import random
 import openai
 
+dotenv_path = pathlib.Path('.env')
+load_dotenv(dotenv_path=dotenv_path)
+
 key_index = random.randint(0, 4)
-key_array = []
+key_array = [os.getenv("KEY1"), os.getenv("KEY2"), os.getenv("KEY3"), os.getenv("KEY4"), os.getenv("KEY5")]
 
 openai.api_key = key_array[key_index]
 
@@ -16,27 +23,26 @@ Answer&&:
 '''
 
 mcq_f = '''Please use the format template. Do not repeat answers.
----BEGIN FORMAT TEMPLATE---
-${QUESTION}
-A) ${ANSWER 1}
-B) ${ANSWER 2}
-C) ${ANSWER 3}
-D) ${ANSWER 4}
-Correct Answer: ${CHOICE A, B, C, or D}
----END FORMAT TEMPLATE---
----BEGIN QUESTIONS---
-'''
-
-multi_mcq_f = ''' Please use the format template. Do not repeat answers.
----BEGIN FORMAT TEMPLATE---
-Q) QUESTION
+Question**:
+---&&&---
 A) ANSWER 1
 B) ANSWER 2
 C) ANSWER 3
 D) ANSWER 4
-Correct Answer: ${CHOICE A, B, C, D}
----END FORMAT TEMPLATE---
----BEGIN QUESTIONS---
+Correct Answer: ANSWER
+---$$$---
+'''
+
+multi_mcq_f = ''' Please use the format template. Do not repeat answers.
+QUESTION:
+
+---&&&---
+A) ANSWER 1
+B) ANSWER 2
+C) ANSWER 3
+D) ANSWER 4
+Correct Answer:
+---$$$---
 Make sure atleast two options are correct.
 '''
 
@@ -112,9 +118,9 @@ def mcq(context, difficulty):
     all_ques=[]
     for i in response[0:5]:
         temp=i.split('---&&&---')
-        temp[1]=temp[1].replace('\n\n', '\n')
-        options=temp[1].split('\n')
-        correct=options[5].split('Correct Answer: ')[1]
+        temp[-1]=temp[-1].replace('\n\n', '\n')
+        options=temp[-1].split('\n')
+        correct=options[5].split('Correct Answer: ')[-1]
         options=options[1:5]
         options_dict={}
         for i in range(0,4):
@@ -136,13 +142,13 @@ def multi_mcq(context, difficulty):
         multi_mcq_f + ' please make sure the difficulty level of the questions is ' + difficulty
     response = gen_response(prompt)
 
-   
+
     all_ques=[]
     for i in response[0:5]:
         temp=i.split('---&&&---')
-        temp[1]=temp[1].replace('\n\n', '\n')
-        options=temp[1].split('\n')
-        correct=options[5].split('Correct Answer: ')[1]
+        temp[-1]=temp[-1].replace('\n\n', '\n')
+        options=temp[-1].split('\n')
+        correct=options[5].split('Correct Answer: ')[-1]
         options=options[1:5]
         options_dict={}
         for i in range(0,4):
